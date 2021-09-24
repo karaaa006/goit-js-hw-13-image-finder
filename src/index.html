@@ -4,12 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>
-      Hello my Friend! <br />
-      welcome to
-    </h1>
-    <img src="./images/site-logo.svg" alt="logo" />
+    <form class="search-form">
+      <input
+        type="text"
+        autocomplete="off"
+        placeholder="Search images..."
+        id="search-input"
+        class="search-input"
+      />
+    </form>
+    <div class="results-wrap">
+      <ul class="gallery"></ul>
+    </div>
+    <button class="more-btn display-none">Next page</button>
   </body>
 </html>

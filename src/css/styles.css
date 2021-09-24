@@ -1,5 +1,117 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
 body {
-  background: black;
-  color: wheat;
+  font-family: sans-serif;
   text-align: center;
+  background-color: #f0e5cf;
+  /* overflow-x: hidden; */
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+img {
+  display: block;
+  width: 100%;
+}
+
+.search-form {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-input {
+  margin-right: 5px;
+  padding: 10px;
+  font-size: 15pt;
+  border-radius: 5px;
+  border: none;
+  color: #ffffff;
+  box-shadow: 4px 35px 59px 8px rgba(34, 60, 80, 0.15);
+  background-color: #4b6587;
+  transition: box-shadow cubic-bezier(0.075, 0.82, 0.165, 1) 500ms,
+    transform cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
+  transform-origin: top;
+}
+
+.search-input::placeholder {
+  color: #ffffff;
+}
+
+.search-input:focus {
+  box-shadow: 4px 35px 33px 8px rgba(34, 60, 80, 0.2);
+  transform: scale(1.1);
+}
+
+.display-none {
+  display: none;
+}
+
+.more-btn {
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #4b6587;
+  color: #ffffff;
+  font-weight: 600;
+  transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 500ms,
+    transform cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
+}
+
+.more-btn:hover,
+.more-btn:focus {
+  background-color: #c8c6c6;
+  /* transform: scale(1.1); */
+}
+
+.gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 10px;
+  overflow-x: hidden;
+}
+
+.photo-card {
+  position: relative;
+  max-width: 500px;
+  cursor: pointer;
+}
+
+.photo-card:hover .stats {
+  opacity: 1;
+}
+
+.stats {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 10px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
+
+  opacity: 0;
+  transition: opacity ease 250ms;
+}
+
+.stats-item {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  color: #ffffff;
+}
+
+.material-icons {
+  margin-right: 5px;
 }

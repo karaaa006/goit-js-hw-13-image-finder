@@ -101,18 +101,3 @@ gallery.addEventListener("click", (e) => {
 moreBtn.addEventListener("click", (e) => {
   renderNextPage(input.value);
 });
-
-let observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(
-    (entry) => {
-      if (entry.isIntersecting) {
-        renderNextPage(input.value);
-      }
-      observer.unobserve(entry.target);
-      observer.observe(document.querySelector(".photo-card:last-child"));
-    },
-    { threshold: 1 },
-  );
-});
-
-observer.observe(document.querySelector(".photo-card:last-child"));

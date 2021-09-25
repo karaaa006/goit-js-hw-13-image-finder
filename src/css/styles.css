@@ -49,10 +49,6 @@ img {
   transform: scale(1.1);
 }
 
-.display-none {
-  display: none;
-}
-
 .more-btn {
   border: none;
   padding: 10px;
@@ -68,27 +64,32 @@ img {
 .more-btn:hover,
 .more-btn:focus {
   background-color: #c8c6c6;
-  /* transform: scale(1.1); */
+}
+.results-wrap {
+  padding: 10px;
 }
 
 .gallery {
-  display: flex;
-  justify-content: center;
+  /* height: 100vh; */
+  display: grid;
   align-items: center;
-  flex-wrap: wrap;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
-  padding: 10px;
-  overflow-x: hidden;
 }
 
 .photo-card {
   position: relative;
-  max-width: 500px;
   cursor: pointer;
 }
 
 .photo-card:hover .stats {
   opacity: 1;
+}
+
+.gallery-photo {
+  /* width: 100%; */
+  height: auto;
+  object-fit: cover;
 }
 
 .stats {

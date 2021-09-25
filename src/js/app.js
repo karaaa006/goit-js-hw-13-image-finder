@@ -2,87 +2,58 @@ import apiQuery from "./apiService";
 import refs from "./refs";
 import { Notify } from "notiflix";
 import * as basicLightbox from "basiclightbox";
+import galleryListTemplate from "../templates/template.hbs";
 
-const { form, input, gallery, moreBtn } = refs;
+const { form, input, gallery } = refs;
 let page = 1;
 
-const getListItems = (hits) => {
-  return hits
-    .map((el) => {
-      const {
-        tags,
-        webformatURL,
-        largeImageURL,
-        likes,
-        views,
-        comments,
-        downloads,
-      } = el;
-
-      return `
-            <li class="photo-card">
-          <img
-            src="${webformatURL}"
-            alt="${tags}"
-            data-full="${largeImageURL}"
-            class="gallery-photo"
-          />
-          <div class="stats">
-            <p class="stats-item">
-              <i class="material-icons">thumb_up</i>
-              ${likes}
-            </p>
-            <p class="stats-item">
-              <i class="material-icons">visibility</i>
-              ${views}
-            </p>
-            <p class="stats-item">
-              <i class="material-icons">comment</i>
-              ${comments}
-            </p>
-            <p class="stats-item">
-              <i class="material-icons">cloud_download</i>
-              ${downloads}
-            </p>
-          </div>
-        </li>
-        `;
-    })
-    .join("");
-};
-
-const renderPhoto = (query) => {
-  page = 1;
-
-  apiQuery(query)
-    .then((d) => {
-      const { total, hits } = d;
-
-      if (total === 0) {
-        throw new Error("Photo not found!");
+const observer = new IntersectionObserver(
+  (entries, observer) =>
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        renderNextPage(input.value);
       }
 
-      Notify.success(`${total} photos found!`);
+      observer.unobserve(entry.target);
+      observer.observe(document.querySelector(".photo-card:last-child"));
+    }),
+  { threshold: 1 },
+);
 
-      gallery.innerHTML = getListItems(hits);
-    })
-    .catch((err) => {
-      Notify.warning(err.message);
-    });
+const renderPhoto = async (query) => {
+  try {
+    page = 1;
 
-  moreBtn.classList.remove("display-none");
+    const data = await apiQuery(query);
+    const { total, hits } = data;
+    const markup = galleryListTemplate(hits);
+
+    if (total === 0) {
+      throw new Error("Photo not found!");
+    }
+
+    Notify.success(`${total} photos found!`);
+
+    gallery.innerHTML = markup;
+
+    observer.observe(document.querySelector(".photo-card:last-child"));
+
+    // scrollToPhotos();
+  } catch (err) {
+    Notify.warning(err.message);
+  }
 };
 
-const renderNextPage = (query) => {
-  apiQuery(query, ++page)
-    .then((d) => {
-      const { hits } = d;
+const renderNextPage = async (query) => {
+  try {
+    const data = await apiQuery(query, ++page);
+    const { hits } = data;
+    const markup = galleryListTemplate(hits);
 
-      gallery.insertAdjacentHTML("beforeend", getListItems(hits));
-    })
-    .catch((err) => {
-      Notify.warning(err.message);
-    });
+    gallery.insertAdjacentHTML("beforeend", markup);
+  } catch (err) {
+    Notify.warning(err.message);
+  }
 };
 
 form.addEventListener("submit", (e) => {
@@ -98,6 +69,11 @@ gallery.addEventListener("click", (e) => {
   basicLightbox.create(`<img src="${fullImg}" width="1920">`).show();
 });
 
-moreBtn.addEventListener("click", (e) => {
-  renderNextPage(input.value);
-});
+function scrollToPhotos() {
+  const element = document.querySelector(".photo-card");
+
+  element.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}

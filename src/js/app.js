@@ -1,5 +1,6 @@
 import apiQuery from "./apiService";
 import refs from "./refs";
+import throttle from "lodash.throttle";
 import { Notify } from "notiflix";
 import * as basicLightbox from "basiclightbox";
 import galleryListTemplate from "../templates/template.hbs";
@@ -10,8 +11,9 @@ let page = 1;
 const observer = new IntersectionObserver(
   (entries, observer) =>
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        renderNextPage(input.value);
+      if (entry.isIntersecting && entry.target.firstElementChild.complete) {
+        throttle(renderNextPage(input.value), 1000);
+        // renderNextPage();
       }
 
       observer.unobserve(entry.target);
@@ -37,8 +39,6 @@ const renderPhoto = async (query) => {
     gallery.innerHTML = markup;
 
     observer.observe(document.querySelector(".photo-card:last-child"));
-
-    // scrollToPhotos();
   } catch (err) {
     Notify.warning(err.message);
   }
@@ -68,12 +68,3 @@ gallery.addEventListener("click", (e) => {
   const fullImg = e.target.dataset.full;
   basicLightbox.create(`<img src="${fullImg}" width="1920">`).show();
 });
-
-function scrollToPhotos() {
-  const element = document.querySelector(".photo-card");
-
-  element.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-}

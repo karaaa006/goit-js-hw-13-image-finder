@@ -1,6 +1,6 @@
+import throttle from "lodash.throttle";
 import apiQuery from "./apiService";
 import refs from "./refs";
-import throttle from "lodash.throttle";
 import { Notify } from "notiflix";
 import * as basicLightbox from "basiclightbox";
 import galleryListTemplate from "../templates/template.hbs";
@@ -13,7 +13,6 @@ const observer = new IntersectionObserver(
     entries.forEach((entry) => {
       if (entry.isIntersecting && entry.target.firstElementChild.complete) {
         throttle(renderNextPage(input.value), 1000);
-        // renderNextPage();
       }
 
       observer.unobserve(entry.target);

@@ -12,11 +12,11 @@ const observer = new IntersectionObserver(
   (entries, observer) =>
     entries.forEach((entry) => {
       if (entry.isIntersecting && entry.target.firstElementChild.complete) {
-        throttle(renderNextPage(input.value), 1000);
-      }
+        renderNextPage(input.value);
 
-      observer.unobserve(entry.target);
-      observer.observe(document.querySelector(".photo-card:last-child"));
+        observer.unobserve(entry.target);
+        observer.observe(document.querySelector(".photo-card:last-child"));
+      }
     }),
   { threshold: 1 },
 );

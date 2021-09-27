@@ -4,10 +4,11 @@
   box-sizing: border-box;
 }
 body {
+  padding: 0;
+  margin: 0;
   font-family: sans-serif;
   text-align: center;
-  background-color: #f0e5cf;
-  /* overflow-x: hidden; */
+  background-color: rgba(34, 60, 80, 1);
 }
 ul {
   list-style: none;
@@ -20,23 +21,27 @@ img {
 }
 
 .search-form {
+  margin-bottom: 10px;
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  margin: 20px 0;
+  height: 90vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .search-input {
-  margin-right: 5px;
   padding: 10px;
+  margin-top: auto;
   font-size: 15pt;
   border-radius: 5px;
-  border: none;
+  border: 2px solid #ffffff;
   color: #ffffff;
-  box-shadow: 4px 35px 59px 8px rgba(34, 60, 80, 0.15);
-  background-color: #4b6587;
-  transition: box-shadow cubic-bezier(0.075, 0.82, 0.165, 1) 500ms,
-    transform cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
+  text-align: center;
+  background-color: rgba(34, 60, 80, 0.5);
+  transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
   transform-origin: top;
 }
 
@@ -45,36 +50,39 @@ img {
 }
 
 .search-input:focus {
-  box-shadow: 4px 35px 33px 8px rgba(34, 60, 80, 0.2);
   transform: scale(1.1);
 }
 
-.more-btn {
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #4b6587;
+.arrow {
+  margin-top: auto;
   color: #ffffff;
-  font-weight: 600;
-  transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 500ms,
-    transform cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
+  animation: arrow-animation 3000ms ease infinite;
+  transition: opacity ease 300ms, transform ease 300ms;
 }
 
-.more-btn:hover,
-.more-btn:focus {
-  background-color: #c8c6c6;
+.arrow i {
+  font-size: 26pt;
 }
+
+.arrow.is-hidden {
+  opacity: 0;
+}
+
 .results-wrap {
-  padding: 10px;
+  padding: 10px 25px;
 }
 
 .gallery {
-  /* height: 100vh; */
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 15px;
+  gap: 25px;
+}
+
+@media screen and (max-width: 1024px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
 }
 
 .photo-card {
@@ -87,8 +95,6 @@ img {
 }
 
 .gallery-photo {
-  /* width: 100%; */
-  height: auto;
   object-fit: cover;
 }
 
@@ -115,4 +121,16 @@ img {
 
 .material-icons {
   margin-right: 5px;
+}
+
+@keyframes arrow-animation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }

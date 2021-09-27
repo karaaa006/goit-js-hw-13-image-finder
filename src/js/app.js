@@ -1,20 +1,20 @@
-import throttle from "lodash.throttle";
 import apiQuery from "./apiService";
 import refs from "./refs";
 import { Notify } from "notiflix";
 import * as basicLightbox from "basiclightbox";
+import "basiclightbox/dist/basicLightbox.min.css";
 import galleryListTemplate from "../templates/template.hbs";
 
 const { form, input, gallery } = refs;
 let page = 1;
+let maxPage = 1;
 
 const observer = new IntersectionObserver(
   (entries, observer) =>
     entries.forEach((entry) => {
       if (entry.isIntersecting && entry.target.firstElementChild.complete) {
-        renderNextPage(input.value);
-
         observer.unobserve(entry.target);
+        renderNextPage(input.value);
         observer.observe(document.querySelector(".photo-card:last-child"));
       }
     }),
@@ -29,13 +29,16 @@ const renderPhoto = async (query) => {
     const { total, hits } = data;
     const markup = galleryListTemplate(hits);
 
+    maxPage = total / hits.length;
+
     if (total === 0) {
       throw new Error("Photo not found!");
     }
 
     Notify.success(`${total} photos found!`);
-
+    form.style.backgroundImage = `linear-gradient(rgba(34, 60, 80, 0.4), rgba(34, 60, 80, 0.4)), url(${hits[0].largeImageURL}) `;
     gallery.innerHTML = markup;
+    document.querySelector(".arrow").classList.remove("is-hidden");
 
     observer.observe(document.querySelector(".photo-card:last-child"));
   } catch (err) {
@@ -45,11 +48,13 @@ const renderPhoto = async (query) => {
 
 const renderNextPage = async (query) => {
   try {
-    const data = await apiQuery(query, ++page);
-    const { hits } = data;
-    const markup = galleryListTemplate(hits);
+    if (page <= maxPage) {
+      const data = await apiQuery(query, ++page);
+      const { hits } = data;
+      const markup = galleryListTemplate(hits);
 
-    gallery.insertAdjacentHTML("beforeend", markup);
+      gallery.insertAdjacentHTML("beforeend", markup);
+    }
   } catch (err) {
     Notify.warning(err.message);
   }
